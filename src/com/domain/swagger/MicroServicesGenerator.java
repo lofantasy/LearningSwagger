@@ -115,30 +115,32 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 
 	@Override
 	public void preprocessSwagger( Swagger swagger) {
-		if ( "/".equals( swagger.getBasePath())) {
-			swagger.setBasePath( "");
-		}
-		if ( swagger != null && swagger.getPaths() != null) {
-			for ( String pathname : swagger.getPaths().keySet()) {
-				Path path = swagger.getPath( pathname);
-				if ( path.getOperations() != null) {
-					for ( Operation operation : path.getOperations()) {
-						if ( operation.getTags() != null) {
-							List< Map< String, String>> tags = new ArrayList< Map< String, String>>();
-							for ( String tag : operation.getTags()) {
-								Map< String, String> value = new HashMap< String, String>();
-								value.put( "tag", tag);
-								value.put( "hasMore", "true");
-								tags.add( value);
+		if ( swagger != null) {
+			if ( "/".equals( swagger.getBasePath())) {
+				swagger.setBasePath( "");
+			}
+			if ( swagger.getPaths() != null) {
+				for ( String pathname : swagger.getPaths().keySet()) {
+					Path path = swagger.getPath( pathname);
+					if ( path.getOperations() != null) {
+						for ( Operation operation : path.getOperations()) {
+							if ( operation.getTags() != null) {
+								List< Map< String, String>> tags = new ArrayList< Map< String, String>>();
+								for ( String tag : operation.getTags()) {
+									Map< String, String> value = new HashMap< String, String>();
+									value.put( "tag", tag);
+									value.put( "hasMore", "true");
+									tags.add( value);
+								}
+								if ( tags.size() > 0) {
+									tags.get( tags.size() - 1).remove( "hasMore");
+								}
+								if ( operation.getTags().size() > 0) {
+									String tag = operation.getTags().get( 0);
+									operation.setTags( Arrays.asList( tag));
+								}
+								operation.setVendorExtension( "x-tags", tags);
 							}
-							if ( tags.size() > 0) {
-								tags.get( tags.size() - 1).remove( "hasMore");
-							}
-							if ( operation.getTags().size() > 0) {
-								String tag = operation.getTags().get( 0);
-								operation.setTags( Arrays.asList( tag));
-							}
-							operation.setVendorExtension( "x-tags", tags);
 						}
 					}
 				}
