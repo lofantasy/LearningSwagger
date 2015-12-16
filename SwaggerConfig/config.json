@@ -1,5 +1,5 @@
 {
-    "verbose":false,
+    "verbose":true,
     "modelPackage": "com.domain.mm.rd.massnewsku.ms.model",
     "apiPackage": "com.domain.mm.rd.massnewsku.ms",
     "invokerPackage": "com.domain.mm.rd.massnewsku.ms.invoke",
