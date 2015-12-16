@@ -1,0 +1,21 @@
+{
+    "verbose":false,
+    "modelPackage": "com.domain.mm.rd.massnewsku.ms.model",
+    "apiPackage": "com.domain.mm.rd.massnewsku.ms",
+    "invokerPackage": "com.domain.mm.rd.massnewsku.ms.invoke",
+    "sourceFolder": "src",
+    "library":"jersey2",
+    "systemProperties" : {
+        "swagger.codegen.jaxrs.sourcefolder" : "src",
+        "swagger.codegen.jaxrs.exceptionpackage" : "com.domain.mm.rd.massnewsku.ms.exception",
+        "swagger.codegen.jaxrs.resources" : "com.domain.mm.rd.massnewsku.ms.resources",
+        "swagger.codegen.jaxrs.impl.source" : "com.domain.mm.rd.massnewsku.ms.impl",
+        "swagger.codegen.jaxrs.factory.source" : "com.domain.mm.rd.massnewsku.ms.factory",
+        "swagger.codegen.jaxrs.api.source" : "com.domain.mm.rd.massnewsku.ms.api",
+        "swagger.codegen.jaxrs.enum" : "com.domain.mm.rd.massnewsku.ms.enums",
+        "domain": "domain.com"
+    },
+    "importMappings" : {
+        "ApiResponseMessage" : "com.domain.mm.rd.massnewsku.ms.ApiResponseMessage"
+    }
+}
