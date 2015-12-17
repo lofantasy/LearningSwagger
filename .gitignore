@@ -1,1 +1,12 @@
 /bin/
+MNSMicroSvc/README.md
+MNSMicroSvc/pom.xml
+MNSMicroSvc/src/com/domain/mm/rd/massnewsku/ms/ApiException.java
+MNSMicroSvc/src/com/domain/mm/rd/massnewsku/ms/ApiOriginFilter.java
+MNSMicroSvc/src/com/domain/mm/rd/massnewsku/ms/ApiResponseMessage.java
+MNSMicroSvc/src/com/domain/mm/rd/massnewsku/ms/NotFoundException.java
+MNSMicroSvc/src/com/domain/mm/rd/massnewsku/ms/api/PersonsApi.java
+MNSMicroSvc/src/com/domain/mm/rd/massnewsku/ms/factories/PersonsApiServiceFactory.java
+MNSMicroSvc/src/com/domain/mm/rd/massnewsku/ms/impl/PersonsApiServiceImpl.java
+MNSMicroSvc/src/com/domain/mm/rd/massnewsku/ms/services/PersonsApiService.java
+MNSMicroSvc/src/main/webapp/WEB-INF/web.xml
