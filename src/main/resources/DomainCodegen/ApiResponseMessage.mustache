@@ -15,6 +15,9 @@ public class ApiResponseMessage {
 	String type;
 	String message;
 	
+	private List< Map< Integer, String>> errors = new ArrayList< Map< Integer, String>>();
+	private List< Map< Integer, String>> info = new ArrayList< Map< Integer, String>>();
+
 	public ApiResponseMessage(){}
 	
 	public ApiResponseMessage(int code, String message){
@@ -40,6 +43,38 @@ public class ApiResponseMessage {
 			break;
 		}
 		this.message = message;
+	}
+
+	public ApiResponseMessage( int code, String className, String classException, String message) {
+		this.code = code;
+		switch(code){
+		case ERROR:
+			setType("error");
+			break;
+		case WARNING:
+			setType("warning");
+			break;
+		case INFO:
+			setType("info");
+			break;
+		case OK:
+			setType("ok");
+			break;
+		case TOO_BUSY:
+			setType("too busy");
+			break;
+		default:
+			setType("unknown");
+			break;
+		}
+		this.message = message;
+		this.className = className;
+		this.classException = classException;
+		
+		Map<Integer, String> newError = new HashMap< Integer, String>();
+		this.errors.add( newError);
+		
+		newError.put( 100, "Value can not be null for templateName");
 	}
 
 	@XmlTransient
