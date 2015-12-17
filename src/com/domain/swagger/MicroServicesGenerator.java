@@ -20,14 +20,23 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
+import com.domain.swagger.dto.DAODetailsDTO;
+import com.domain.swagger.dto.MicroservicesModel;
+import com.domain.swagger.dto.SwaggerJsonDTO;
+import com.domain.swagger.properties.MicroservicesProperties;
+import com.domain.swagger.utils.JSONParser;
 
 /**
  * MicroServices generator based off the JaxRS Generator class from Swagger-Codegen
  */
 public class MicroServicesGenerator extends JavaClientCodegen implements CodegenConfig {
 	protected String title = "Micro Services";
+
+	private JSONParser< DAODetailsDTO> daoDetailsParser = new JSONParser< DAODetailsDTO>();
 
 	public MicroServicesGenerator() {
 		super.processOpts();
@@ -211,10 +220,49 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 				
 				if ( operation.operationId.endsWith( "Get")) { operation.operationId = "get" + capitalize( operation.operationId.replaceAll("Get$", "")); }
 			}
+			
+			// TODO: figure out why the imports are getting confused here. 
+			
 		}
 		return objs;
 	}
 
+	public Map< String, Object> postProcessSupportingFileData( Map< String, Object> objs) {
+		if ( objs.containsKey( "models")) {
+			List< Map< String, String>> imports = new ArrayList< Map<String,String>>();
+			
+			List< Object> inputModels = (ArrayList<Object>)objs.get("models");
+			
+			for( Object mod : inputModels) {
+				MicroservicesModel model = ( MicroservicesModel) ((Map<String, Object>)inputModels).get( "model");
+				
+				if ( model.useDao) {
+					model.imports = new HashSet<String>();
+					model.imports.add( "com.domain.ta.aa.dao.exceptions.QueryException");
+					model.imports.add( "org.apache.log4j.Logger");
+					model.imports.add( "java.util.ArrayList");
+					model.imports.add( "java.util.List");
+					
+					// TODO: need to update this to better handle the imports. 
+					/*
+					Map<String, Object> models = new HashMap< String, Object>();
+					models.put("package", modelPackage().replaceAll( "\\.model", ""));
+					
+					models.put("imports", imports);
+					List<Object> modelsList = new ArrayList<Object>();
+					
+					
+					modelsList.add( mod);
+					models.put( "models", modelsList);
+					daoGen.writeDaoStubForModel( this, daoClassPath, dm.classname, models);
+	*/
+				}
+			}
+		}
+		
+		return objs;
+	}
+	
 	@Override
 	public String toApiName( String name) {
 		if ( name.length() == 0) { return "DefaultApi"; }
@@ -272,6 +320,48 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 		return super.shouldOverwrite( filename) && !filename.endsWith( "ServiceImpl.java") && !filename.endsWith( "ServiceFactory.java");
 	}
 	
+	
+	private void processModel( Map< String, Object> modelInfo) {
+		MicroservicesModel model = ( MicroservicesModel) modelInfo.get( "model");
+		
+		for ( CodegenProperty property : model.vars) {
+			processProperty( ( MicroservicesProperties) property);
+
+			if ( property.isEnum && property.defaultValue != null && !"null".equals( property.defaultValue)) {
+				property.defaultValue = property.datatypeWithEnum + "." + property.defaultValue;
+			}
+		}
+		
+		// TODO if model.modenJson.contains( "x-useDao") -- create a Actual DTO of this object (use SwaggerJsonDTO). 
+		// DAODetailsDTO = daoEnt = daoDetailsParser.createObject( model.modelJson, DAODetailsDTO.class);
+		
+		// buildJndiEnum
+	}
+	
+	
+	/**
+	 * Parse the properties jsonString to build the X-^ Variable for setting short and dao names. 
+	 * @param property
+	 */
+	private void processProperty( MicroservicesProperties property) {
+		
+		String jsonString = property.jsonSchema;
+		JSONParser< SwaggerJsonDTO> jp = new JSONParser< SwaggerJsonDTO>();
+		SwaggerJsonDTO dto = jp.createObject( jsonString, SwaggerJsonDTO.class);
+		
+		if ( dto.isShort()) {
+			property.isShort = true;
+			property.datatype = "short";
+			property.datatypeWithEnum = "short";
+			property.defaultValue = "-1";
+		}
+	}
+	
+	private List< Object> buildDaoSelectors( DAODetailsDTO daoEnt) {
+		// TODO:
+		
+		return null;
+	}
 	
 	public static String capitalize(String str) {
 	      int strLen;

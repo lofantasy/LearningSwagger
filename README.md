@@ -38,6 +38,13 @@ Learning how swagger works
 	- DAO.mustache<br>
 		- This will be used to create the stub entries for any x-daoSelectors entry found in the definitions section of the swagger input<br>
 
+### TODO:
+- add in the processProperty() function<br>
+- add in the x-vendorExtension for shorts<br>
+- add in the x-useDao for both operations and definitions<br>
+	- entry/map/array for creating DAO class stubbing<br>
+
+
 
 ## Info below is from other readme file and will be changing / adding to the info above. 
 
