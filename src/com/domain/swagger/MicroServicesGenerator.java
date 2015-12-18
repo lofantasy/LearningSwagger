@@ -5,7 +5,8 @@ package com.domain.swagger;
 
 import io.swagger.codegen.CodegenConfig;
 import io.swagger.codegen.CodegenConstants;
-import io.swagger.codegen.CodegenModel;
+import io.swagger.codegen.CodegenModelFactory;
+import io.swagger.codegen.CodegenModelType;
 import io.swagger.codegen.CodegenOperation;
 import io.swagger.codegen.CodegenProperty;
 import io.swagger.codegen.CodegenResponse;
@@ -20,7 +21,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +36,11 @@ import com.domain.swagger.utils.JSONParser;
 public class MicroServicesGenerator extends JavaClientCodegen implements CodegenConfig {
 	protected String title = "Micro Services";
 
+	private DaoModelGenerator daoGen = new DaoModelGenerator();
+	
 	private JSONParser< DAODetailsDTO> daoDetailsParser = new JSONParser< DAODetailsDTO>();
+	
+	private String daoPath = null;
 
 	public MicroServicesGenerator() {
 		super.processOpts();
@@ -64,6 +68,12 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 		additionalProperties.put( CodegenConstants.ARTIFACT_ID, artifactId);
 		additionalProperties.put( CodegenConstants.ARTIFACT_VERSION, artifactVersion);
 		additionalProperties.put( "title", title);
+		
+		CodegenModelFactory.setTypeMapping( CodegenModelType.MODEL, MicroservicesModel.class);
+		CodegenModelFactory.setTypeMapping( CodegenModelType.PROPERTY, MicroservicesProperties.class);
+
+		daoPath = "src/" + ( modelPackage + "/dao").replace(".", "/");
+		
 	}
 
 	public CodegenType getTag() {
@@ -164,13 +174,15 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 		for ( Object _mo : models) {
 			@SuppressWarnings( "unchecked")
 			Map< String, Object> mo = ( Map< String, Object>) _mo;
-			CodegenModel cm = ( CodegenModel) mo.get( "model");
-			for ( CodegenProperty var : cm.vars) {
-				// handle default value for enum, e.g. available => StatusEnum.available
-				if ( var.isEnum && var.defaultValue != null && !"null".equals( var.defaultValue)) {
-					var.defaultValue = var.datatypeWithEnum + "." + var.defaultValue;
-				}
-			}
+			MicroservicesModel cm = ( MicroservicesModel) mo.get( "model");
+			
+			processModel( cm);
+//			for ( CodegenProperty var : cm.vars) {
+//				// handle default value for enum, e.g. available => StatusEnum.available
+//				if ( var.isEnum && var.defaultValue != null && !"null".equals( var.defaultValue)) {
+//					var.defaultValue = var.datatypeWithEnum + "." + var.defaultValue;
+//				}
+//			}
 		}
 		return objs;
 	}
@@ -234,17 +246,17 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 			List< Object> inputModels = (ArrayList<Object>)objs.get("models");
 			
 			for( Object mod : inputModels) {
-				MicroservicesModel model = ( MicroservicesModel) ((Map<String, Object>)inputModels).get( "model");
-				
+				MicroservicesModel model = (MicroservicesModel)((Map<String, Object>)mod).get("model");
+
 				if ( model.useDao) {
-					model.imports = new HashSet<String>();
-					model.imports.add( "com.domain.ta.aa.dao.exceptions.QueryException");
-					model.imports.add( "org.apache.log4j.Logger");
-					model.imports.add( "java.util.ArrayList");
-					model.imports.add( "java.util.List");
+//					model.imports = new HashSet<String>();
+//					model.imports.add( "com.domain.ta.aa.dao.exceptions.QueryException");
+//					model.imports.add( "org.apache.log4j.Logger");
+//					model.imports.add( "java.util.ArrayList");
+//					model.imports.add( "java.util.List");
+//					
+//					// TODO: need to update this to better handle the imports. 
 					
-					// TODO: need to update this to better handle the imports. 
-					/*
 					Map<String, Object> models = new HashMap< String, Object>();
 					models.put("package", modelPackage().replaceAll( "\\.model", ""));
 					
@@ -254,8 +266,8 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 					
 					modelsList.add( mod);
 					models.put( "models", modelsList);
-					daoGen.writeDaoStubForModel( this, daoClassPath, dm.classname, models);
-	*/
+					daoGen.writeDaoStubForModel( this, daoPath, model.classname, models);
+
 				}
 			}
 		}
@@ -321,8 +333,8 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 	}
 	
 	
-	private void processModel( Map< String, Object> modelInfo) {
-		MicroservicesModel model = ( MicroservicesModel) modelInfo.get( "model");
+	private void processModel( MicroservicesModel model) { // Map< String, Object> modelInfo) {
+//		MicroservicesModel model = ( MicroservicesModel) modelInfo.get( "model");
 		
 		for ( CodegenProperty property : model.vars) {
 			processProperty( ( MicroservicesProperties) property);
@@ -330,6 +342,13 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 			if ( property.isEnum && property.defaultValue != null && !"null".equals( property.defaultValue)) {
 				property.defaultValue = property.datatypeWithEnum + "." + property.defaultValue;
 			}
+		}
+		
+		if ( model.modelJson.contains( "x-useDao")) {
+			DAODetailsDTO daoEnt = daoDetailsParser.createObject( model.modelJson, DAODetailsDTO.class);
+			
+			model.useDao = true;
+			model.jndi = Arrays.asList( "");
 		}
 		
 		// TODO if model.modenJson.contains( "x-useDao") -- create a Actual DTO of this object (use SwaggerJsonDTO). 

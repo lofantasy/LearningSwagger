@@ -11,7 +11,7 @@
 	<classpathentry kind="lib" path="D:/JavaProgramming/GitHubExternal/swagger-codegen/modules/swagger-codegen/target/lib/swagger-core-1.5.5-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="D:/JavaProgramming/GitHubExternal/swagger-codegen/modules/swagger-codegen/target/lib/swagger-models-1.5.5-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="D:/JavaProgramming/GitHubExternal/swagger-codegen/modules/swagger-codegen/target/lib/swagger-parser-1.0.12.jar"/>
-	<classpathentry kind="lib" path="D:/JavaProgramming/GitHubExternal/swagger-codegen/modules/swagger-codegen/target/swagger-codegen-2.1.5-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="D:/JavaProgramming/GitHubExternal/swagger-codegen/modules/swagger-codegen/target/swagger-codegen-2.1.5-SNAPSHOT.jar" sourcepath="D:/JavaProgramming/GitHubExternal/swagger-codegen"/>
 	<classpathentry kind="lib" path="D:/JavaProgramming/GitHubExternal/swagger-codegen/modules/swagger-codegen/target/lib/jackson-databind-2.4.5.jar"/>
 	<classpathentry kind="lib" path="/THDSwaggerComponent/lib/gson-2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>

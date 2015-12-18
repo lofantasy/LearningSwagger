@@ -41,5 +41,89 @@
                 }
             }
         }
-    }
+    },
+	"definitions": {
+        "MasterFileTemplate": {
+            "description": "Data from the MMD_FILE_TMPL Table",
+            "x-useDao" : "true",
+            "x-daoDataSource" : "TechnologyInformationSystems.2.",
+            "x-daoSelectors" : {
+            	"jndi": [ "TechnologyInformationSystems.2.", "TechnologyInformationSystems.1." ],
+				"customJndi": [],
+				"insertSelector" : {
+					"function1" : {
+						"dao" : "getTemplateDetailsByTemplate",
+						"selector" : "readMerchandiseMasterDataFileTemplateByInputList",
+						"debug" : "true",
+						"params" : [
+							{ "int" : "ownerApplicationId" },
+							{ "string" : "templateName" }
+						]
+					},
+					"function2" : {
+						"dao" : "getTemplateDetails",
+						"selector" : "readMerchandiseMasterDataFileTemplateByInputList",
+						"debug" : "false",
+						"params" : [ 
+							{ "int" : "ownerApplicationId" }
+						]
+					}
+				}
+            },
+            
+            "properties": {
+                "ownerApplicationId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Application ID of this Template.",
+                    "x-daoElement": "ownerApplicationID",
+                    "x-dbColumn": "OWNR_APP_ID"
+                },
+                "columnHeaderText": {
+                    "type": "string",
+                    "description": "Name of the expected Header in the template",
+                    "x-daoElement": "columnHeaderText",
+                    "x-dbColumn": "COL_HDR_TXT"
+                },
+                "dataTypeIndicator": {
+                    "type": "string",
+                    "description": "Expected data type of the column",
+                    "x-daoElement": "dataTypeIndicator",
+                    "x-dbColumn": "DATA_TYP_IND"
+                },
+                "minimumCharacterCount": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Minimun amount of characters allowed",
+                    "x-daoElement": "minimumCharacterCount",
+                    "x-dbColumn": "MIN_CHAR_CNT",
+                    "x-toShort": true
+                },
+                "maximumCharacterCount": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Maximun amount of characters allowed",
+                    "x-daoElement": "maximumCharacterCount",
+                    "x-dbColumn": "MAX_CHAR_CNT",
+                    "x-toShort": true
+                },
+                "fieldName": {
+                    "type": "string",
+                    "description": "Not sure, another team made this.",
+                    "x-daoElement": "fieldName",
+                    "x-dbColumn": "FLD_NM"
+                },
+                "dataText": {
+                    "type": "string",
+                    "description": "JSON String of the row details",
+                    "x-daoElement": "dataText",
+                    "x-dbColumn": "DATA_TXT"
+                },
+                "dataTextDetails" : {
+                	"type" : "object",
+        			"$ref" : "#/definitions/MasterFileTemplateDataText"
+                }
+            }
+        }
+	}
 }
