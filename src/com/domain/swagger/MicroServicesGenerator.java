@@ -6,6 +6,8 @@ package com.domain.swagger;
 import io.swagger.codegen.CodegenConfig;
 import io.swagger.codegen.CodegenConstants;
 import io.swagger.codegen.CodegenModel;
+import io.swagger.codegen.CodegenModelFactory;
+import io.swagger.codegen.CodegenModelType;
 import io.swagger.codegen.CodegenOperation;
 import io.swagger.codegen.CodegenProperty;
 import io.swagger.codegen.CodegenResponse;
@@ -64,6 +66,11 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 		additionalProperties.put( CodegenConstants.ARTIFACT_ID, artifactId);
 		additionalProperties.put( CodegenConstants.ARTIFACT_VERSION, artifactVersion);
 		additionalProperties.put( "title", title);
+		
+		// Use a custom created Model/Properties class to update/extend the Swagger Model class:
+		CodegenModelFactory.setTypeMapping( CodegenModelType.MODEL, MicroservicesModel.class);
+		CodegenModelFactory.setTypeMapping( CodegenModelType.PROPERTY, MicroservicesProperties.class);
+
 	}
 
 	public CodegenType getTag() {
