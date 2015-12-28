@@ -241,7 +241,7 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 			List< Object> inputModels = (ArrayList<Object>)objs.get("models");
 			
 			for( Object mod : inputModels) {
-				MicroservicesModel model = ( MicroservicesModel) ((Map<String, Object>)inputModels).get( "model");
+				MicroservicesModel model = ( MicroservicesModel) ((Map<String, Object>)mod).get( "model");
 				
 				if ( model.useDao) {
 					model.imports = new HashSet<String>();

@@ -5,6 +5,7 @@ package com.domain.swagger.dto;
 
 import io.swagger.codegen.CodegenModel;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
