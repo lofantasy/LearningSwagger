@@ -25,6 +25,12 @@ Learning how swagger works
 * gson-2.3.jar<br>
 * guava-15.0.jar<br>
 
+<br>
+* Update for the 1.5.5 release<br>
+	* Jersety-*-1.18.1 is required<br>
+	* jackson-jaxrs-base-2.2.3.jar is now required<br>
+
+
 
 ### Mustache File Information:
 - \*ApiServiceImpl.mustache - The Location of the actual logic for the RESTful entry points.<br>
@@ -33,6 +39,18 @@ Learning how swagger works
 - \*Api.mustache - the GET|POST method for Jersey.<br>
 - model.mustache - This is any entry found under the "definitions" node in your input Swagger.json file<br> 
 	- also contains get/set/hashcode/toString/equals as default methods
+
+- NEW as of 1.5.5:<br>
+	- bodyParams.mustache<br>
+	- formParams.mustache<br>
+	- generatedAnnotation.mustache<br>
+	- headerParams.mustache<br>
+	- pathParams.mustache<br>
+	- pom.mustache<br>
+	- queryParams.mustache<br>
+	- README.mustache<br>
+	- StringUtil.mustache<br>
+
 
 * Custom mustache files:<br>
 	- DAO.mustache<br>

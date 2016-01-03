@@ -44,7 +44,7 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 		super.processOpts();
 
 		sourceFolder = "src/gen/java";
-		invokerPackage = "io.swagger.api";
+		invokerPackage = "com.domain.mm.rd.massnewsku.ms";
 		artifactId = "domain-jaxrs-server";
 
 		outputFolder = System.getProperty( "swagger.codegen.jaxrs.genfolder", "generated-code/domainMicroService");
@@ -96,7 +96,9 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 		supportingFiles.add( new SupportingFile( "ApiOriginFilter.mustache", ( sourceFolder + '/' + apiPackage).replace( ".", "/"), "ApiOriginFilter.java"));
 		supportingFiles.add( new SupportingFile( "ApiResponseMessage.mustache", ( sourceFolder + '/' + apiPackage).replace( ".", "/"), "ApiResponseMessage.java"));
 		supportingFiles.add( new SupportingFile( "NotFoundException.mustache", ( sourceFolder + '/' + apiPackage).replace( ".", "/"), "NotFoundException.java"));
+		supportingFiles.add( new SupportingFile( "StringUtil.mustache", (sourceFolder + '/' + invokerPackage).replace(".", "/"), "StringUtil.java"));
 		supportingFiles.add( new SupportingFile( "web.mustache", ( "src/main/webapp/WEB-INF"), "web.xml"));
+		
 
 	}
 
@@ -362,6 +364,8 @@ public class MicroServicesGenerator extends JavaClientCodegen implements Codegen
 			property.datatypeWithEnum = "short";
 			property.defaultValue = "-1";
 		}
+		
+		if ( null != dto.getDaoElement()) {	property.daoElement = dto.getDaoElement(); }
 	}
 	
 	private List< Object> buildDaoSelectors( DAODetailsDTO daoEnt) {

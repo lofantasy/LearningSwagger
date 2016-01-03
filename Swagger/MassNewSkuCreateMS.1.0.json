@@ -1,0 +1,515 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Mass New SKU Create MicroService",
+        "version": "1.0.0",
+        "title": "Mass New SKU",
+        "contact": {},
+        "license": {
+            "name": "THD",
+            "url": "homedepot.com"
+        }
+    },
+    "host": "homedepot.com:443",
+    "basePath": "/MassSkuMS/rs",
+    "tags": [
+        {
+            "name": "MasterTemplate"
+        }
+    ],
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/template/details": {
+            "get": {
+                "tags": [
+                    "MasterTemplate"
+                ],
+                "summary": "Select all details for Template ID",
+                "description": "Return all details for Application ID.",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "appId",
+                        "in": "query",
+                        "description": "Application ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template Table details.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MasterFileTemplate"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fatal Error.",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/ErrorResponseHandler"
+                        }
+                    }
+                },
+                "x-response1" : "Hi"
+            }
+        },
+        "/template/detailsByTemplate": {
+            "get": {
+                "tags": [
+                    "MasterTemplate"
+                ],
+                "summary": "Select all details for Template ID and Template Name.",
+                "description": "Return all details for Application ID and Template Name.",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "appId",
+                        "in": "query",
+                        "description": "Application ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                    	"name": "templateName",
+                    	"in": "query",
+                    	"description" : "Template Name",
+                    	"required": false,
+                    	"type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template Table details.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MasterFileTemplate"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fatal Error.",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/ErrorResponseHandler"
+                        }
+                    }
+                }
+            }
+        },
+        "/request/header/details": {
+            "get": {
+                "tags": [
+                    "Master Request"
+                ],
+                "summary": "Return the details from the header table.",
+                "description": "Return the details from the header table.",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "appId",
+                        "in": "query",
+                        "description": "Application ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "description": "UserID To search for or null to return all",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of Header details",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MasterUploadRequest"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fatal Error",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/ErrorResponseHandler"
+                        }
+                    }
+                }
+            }
+        },
+        "/request/row/details": {
+            "get": {
+                "tags": [
+                    "Master Request"
+                ],
+                "summary": "Return all the rows for a Request ID",
+                "description": "Return all the rows for a Request ID",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "requestId",
+                        "in": "query",
+                        "description": "Request ID for request",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "statusCodes",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Template Table details.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MasterFileDetail"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Fatal Error.",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/ErrorResponseHandler"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "MasterFileTemplate": {
+            "description": "Data from the MMD_FILE_TMPL Table",
+            "x-useDao" : "true",
+            "x-daoDataSource" : "TechnologyInformationSystems.2.",
+            "x-daoSelectors" : {
+            	"jndi": [ "TechnologyInformationSystems.2.", "TechnologyInformationSystems.1." ],
+				"customJndi": [],
+				"insertSelector" : {
+					"function1" : {
+						"dao" : "getTemplateDetailsByTemplate",
+						"selector" : "readMerchandiseMasterDataFileTemplateByInputList",
+						"debug" : "true",
+						"params" : [
+							{ "int" : "ownerApplicationId" },
+							{ "string" : "templateName" }
+						]
+					},
+					"function2" : {
+						"dao" : "getTemplateDetails",
+						"selector" : "readMerchandiseMasterDataFileTemplateByInputList",
+						"debug" : "false",
+						"params" : [ 
+							{ "int" : "ownerApplicationId" }
+						]
+					}
+				}
+            },
+            
+            "properties": {
+                "ownerApplicationId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Application ID of this Template.",
+                    "x-daoElement": "ownerApplicationID",
+                    "x-dbColumn": "OWNR_APP_ID"
+                },
+                "columnHeaderText": {
+                    "type": "string",
+                    "description": "Name of the expected Header in the template",
+                    "x-daoElement": "columnHeaderText",
+                    "x-dbColumn": "COL_HDR_TXT"
+                },
+                "dataTypeIndicator": {
+                    "type": "string",
+                    "description": "Expected data type of the column",
+                    "x-daoElement": "dataTypeIndicator",
+                    "x-dbColumn": "DATA_TYP_IND"
+                },
+                "minimumCharacterCount": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Minimun amount of characters allowed",
+                    "x-daoElement": "minimumCharacterCount",
+                    "x-dbColumn": "MIN_CHAR_CNT",
+                    "x-toShort": true
+                },
+                "maximumCharacterCount": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Maximun amount of characters allowed",
+                    "x-daoElement": "maximumCharacterCount",
+                    "x-dbColumn": "MAX_CHAR_CNT",
+                    "x-toShort": true
+                },
+                "fieldName": {
+                    "type": "string",
+                    "description": "Not sure, another team made this.",
+                    "x-daoElement": "fieldName",
+                    "x-dbColumn": "FLD_NM"
+                },
+                "dataText": {
+                    "type": "string",
+                    "description": "JSON String of the row details",
+                    "x-daoElement": "dataText",
+                    "x-dbColumn": "DATA_TXT"
+                },
+                "dataTextDetails" : {
+                	"type" : "object",
+        			"$ref" : "#/definitions/MasterFileTemplateDataText"
+                }
+            }
+        },
+        "MasterFileTemplateDataText": {
+        	"description" : "Data Text column expanded to input DTO Object",
+        	"properties" : {
+        		"mandatory" : {
+        			"type" : "boolean",
+        			"description" : "Is this column required by the template"
+        		},
+        		"ignore" : {
+        			"type" : "boolean",
+        			"description" : "Should the column be ignored when processing the row."
+        		},
+        		"predefinedValueList" : {
+        			"type" : "array",
+        			"items" : {
+        				"type" : "string"
+        			}
+        		},
+        		"column": {
+        			"type" : "string",
+        			"description" : "Column in the spreadsheet"
+        		},
+        		"errorCol" : {
+        			"type" : "boolean",
+        			"description" : "Column to be used for displaying errors"
+        		},
+        		"infoCol" : {
+        			"type" : "boolean",
+        			"description" : "Column to be used for displaying info messages"
+        		},
+        		"resultCol" : {
+        			"type" : "boolean",
+        			"description" : "Column to be used for displaying the created SKU Number",
+        			"defaultValue" : "false"
+        		},
+        		"tab": {
+        			"type" : "string",
+        			"description" : "Tab this field appears on."
+        		},
+        		"dto": {
+        			"type" : "string",
+        			"description" : "DTO Name used by the Batch process."
+        		},
+        		"key": {
+        			"type": "boolean",
+        			"description" : "Is this column to be used in key creation.",
+        			"defaultValue" : "false"
+        		}
+        	}
+        },
+		"MasterUploadRequest": {
+			"x-useDao" : "true",
+            "x-daoDataSource" : "TechnologyInformationSystems.2.",
+            "x-daoSelectors" : {
+            	"jndi": [ "TechnologyInformationSystems.2.", "TechnologyInformationSystems.1." ],
+				"customJndi": [],
+				"insertSelector" : {
+					"function1" : {
+						"dao" : "getRequestRowDetails",
+						"selector" : "readMerchandiseMasterDataUploadRequestByInputList",
+						"debug" : "true",
+						"params" : [
+							{ "int" : "requestId" },
+							{ "List" : "statusCodes" }
+						]
+					}
+				}
+            },
+
+            "description": "Header table for each request submitted.",
+            "properties": {
+                "requestId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Header ID for this request.",
+                    "x-daoElement": "masterFileUPloadRequestId",
+                    "x-dbColumn": "MMD_FILE_UPLD_RQST_ID"
+                },
+                "ownerApplicationId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Application ID",
+                    "x-daoElement": "ownerApplicationId",
+                    "x-dbColumn": "OWNR_APPL_ID"
+                },
+                "ownerApplicationName": {
+                	"type": "string",
+                	"description" : "Name of the Application",
+                	"x-daoElement" : "ownerApplicationName",
+                	"x-dbColumn" : "unknown"
+                },
+                "requestDescription": {
+                    "type": "string",
+                    "description": "Description of the upload request.",
+                    "x-daoElement": "requestDescription",
+                    "x-dbColumn": "RQST_DESC"
+                },
+                "fileUploadRequestStatus": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "Status code of the upload request.",
+                    "x-toShort": true,
+                    "x-daoElement" : "merchandiseMasterDataFileUploadStatusCode",
+                    "x-dbColumn" : "MMD_FILE_UPLD_STAT_CD"
+                },
+                "gridFileURL": {
+                    "type": "string",
+                    "description": "URL of the content grid xlsx/m for this request.",
+                    "x-daoElement" : "gridUrl",
+                    "x-dbColumn" : "GRID_FILE_URL_TXT"
+                }
+            }
+        },
+		"MasterFileDetail": {
+			"x-useDao" : "true",
+            "x-daoDataSource" : "TechnologyInformationSystems.2.",
+            "x-daoSelectors" : {
+            	"jndi": [ "TechnologyInformationSystems.2.", "TechnologyInformationSystems.1." ],
+				"customJndi": [],
+				"insertSelector" : {
+					"function1" : {
+						"dao" : "getRequestRowDetails",
+						"selector" : "readMerchandiseMasterDataFileUploadDetailByInputList",
+						"debug" : "true",
+						"params" : [
+							{ "int" : "requestId" },
+							{ "List" : "statusCodes" }
+						]
+					}
+				}
+            },
+		
+            "description": "Row Details object",
+            "properties": {
+                "requestId": {
+                    "description": "Request ID",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "rowId": {
+                    "type": "integer",
+                    "description": "File line number in input spreadsheet",
+                    "x-daoElement": "fileLineNumber",
+                    "x-dbColumn": "FILE_LINE_NBR",
+                    "x-toShort": true
+                },
+                "statusCode": {
+                    "type": "integer",
+                    "description": "Status Code of request row",
+                    "x-daoElement": "merchandiseMasterDataFileUploadStatusCode",
+                    "x-dbColumn": "MMD_FILE_UPLD_STAT_CD",
+                    "x-toShort": true
+                },
+                "uploadAttemptCount": {
+                    "type": "integer",
+                    "description": "How many times has the row been tried.",
+                    "x-daoElement": "uploadAttemptCount",
+                    "x-dbColumn": "uploadAttemptCount",
+                    "x-toShort": true
+                },
+                "commentText": {
+                    "type": "string",
+                    "description": "Result object coming from a web service request.",
+                    "x-daoElement": "commentText",
+                    "x-dbColumn": "CMT_TXT"
+                },
+                "dataText": {
+                    "type": "object",
+                    "$ref": "#/definitions/MasterFileErrorDTO"
+                }
+            }
+        },
+        "MasterFileErrorDTO": {
+            "description": "Row Errors / Info from error table.",
+            "properties": {
+                "requestId": {
+                    "description": "Request ID",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "fileRowId": {
+                	"description" : "File line Number",
+                	"type" : "integer",
+					"x-daoElement": "fileLineNumber",
+                    "x-dbColumn": "fileLineNumber",
+                    "x-toShort": true
+                },
+                "errorCode" : {
+                	"description" : "Error Code",
+                	"type" : "integer",
+					"x-daoElement": "merchandiseMasterDataFileUploadErrorCode",
+                    "x-dbColumn": "merchandiseMasterDataFileUploadErrorCode",
+                    "x-toShort": true
+                },
+                "additionalErrorInfo" : {
+                	"description" : "any additional message for error code",
+                	"type" : "string",
+					"x-daoElement": "additionalErrorInformationText",
+                    "x-dbColumn": "additionalErrorInformationText",
+                    "x-toShort": true
+                },
+                "errorDescription" : {
+                	"description" : "im not sure.",
+                	"type" : "string",
+					"x-daoElement": "errorDescription",
+                    "x-dbColumn": "errorDescription",
+                    "x-toShort": true
+                }
+            }
+        },
+        
+        "ErrorResponseHandler": {
+        	"description" : "Hold errors related to 500 status",
+        	"properties": {
+        		"errorCode": {
+        			"type" : "integer",
+        			"format" : "int32",
+        			"description" : "Error Code"
+        		}
+        	}
+        }
+    }
+}

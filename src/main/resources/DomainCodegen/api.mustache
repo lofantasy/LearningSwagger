@@ -47,7 +47,8 @@ public class {{classname}}  {
         @io.swagger.annotations.ApiResponse(code = {{{code}}}, message = "{{{message}}}", response = {{{returnType}}}.class{{#returnContainer}}, responseContainer = "{{{returnContainer}}}"{{/returnContainer}}){{#hasMore}},
 {{/hasMore}}{{/responses}}  })
 
-	public Response {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}},{{/allParams}}@Context SecurityContext securityContext) throws NotFoundException {
+	public Response {{operationId}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}},{{/allParams}} 
+		@Context SecurityContext securityContext) throws NotFoundException {
 		return delegate.{{operationId}}({{#allParams}}{{#isFile}}fileDetail{{/isFile}}{{^isFile}}{{paramName}}{{/isFile}},{{/allParams}}securityContext);
 	}
 {{/operation}}
