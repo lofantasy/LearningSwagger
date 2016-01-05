@@ -28,7 +28,29 @@ Learning how swagger works
 <br>
 * Update for the 1.5.5 release<br>
 	* Jersety-*-1.18.1 is required<br>
-	* jackson-jaxrs-base-2.2.3.jar is now required<br>
+	* jackson-jaxrs-base -> 2.4.5 <br>
+	* jackson-jaxrs-json-provider -> 2.4.5<br>
+
+web.xml:<br>
+*     <init-param><br>
+    	<param-name>jersey.config.server.provider.classnames</param-name><br>
+    	<param-value><br>
+			io.swagger.jaxrs.listing.ApiListingResource.class,<br>
+    	    io.swagger.jaxrs.listing.SwaggerSerializers.class,  <br>          
+            com.domain.mm.rd.massnewsku.ms.utils.NotFoundExceptionHandler<br>
+    	</param-value><br>
+    </init-param><br>
+<br>
+public final class NotFoundExceptionHandler implements ExceptionMapper< NotFoundException> {
+	@Override
+	public Response toResponse(final NotFoundException exception) {
+		System.out.println("Oh. My. Hawd");
+		return Response.status(Status.BAD_REQUEST)
+				.entity(new ErrorMessage(exception.getCode(), exception.getMessage()))
+				.type(MediaType.APPLICATION_JSON).build();
+	}
+
+}
 
 
 
